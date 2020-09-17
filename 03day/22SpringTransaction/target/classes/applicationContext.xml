@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	
+    <!-- Define your beans here -->
+    <context:component-scan base-package="com.jasdhir.springdemo" />
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="org.h2.Driver" />
+        <property name="url" value="jdbc:h2:tcp://localhost/~/test" />
+        <!--<property name="url" value="jdbc:h2:~/test"/>-->
+        <!--<property name="url" value="jdbc:h2:mem:test"/>-->
+        <property name="username" value="sa" />
+        <property name="password" value="" />
+        <property name="initialSize" value = "5" />
+    </bean>
+
+   <!-- <bean id="txManager" class= "org.springframework.transaction.PlatformTransactionManager">-->
+    <bean id="txManager" class= "org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="txManager" />
+</beans>
+
+
+
+
+
